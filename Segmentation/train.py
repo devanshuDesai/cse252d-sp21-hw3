@@ -29,7 +29,7 @@ parser.add_argument('--experiment', default='train',
                     help='the path to store sampled images and models')
 parser.add_argument('--modelRoot', default='checkpoint',
                     help='the path to store the training results')
-parser.add_argument('--initLR', type=float, default=0.0001, help='the initial learning rate')
+parser.add_argument('--initLR', type=float, default=0.1, help='the initial learning rate')
 parser.add_argument('--nepoch', type=int, default=100, help='the training epoch')
 parser.add_argument('--batchSize', type=int, default=64,
                     help='the size of a batch')
@@ -105,8 +105,9 @@ loadPretrainedWeight(encoder)
 
 # Initialize optimizer
 params = list(encoder.parameters()) + list(decoder.parameters())
-optimizer = optim.SGD(params, lr=opt.initLR,
-                      momentum=0.9, weight_decay=5e-4)
+optimizer = optim.RMSprop(params, lr=opt.initLR, weight_decay=1e-8, momentum=0.9)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=2)
+# optimizer = optim.SGD(params, lr=opt.initLR, momentum=0.9, weight_decay=5e-4)
 
 # Initialize dataLoader
 segDataset = dataLoader.BatchLoader(
