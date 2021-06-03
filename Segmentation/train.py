@@ -110,7 +110,9 @@ optimizer = optim.SGD(params, lr=opt.initLR,
 segDataset = dataLoader.BatchLoader(
     imageRoot=opt.imageRoot,
     labelRoot=opt.labelRoot,
-    fileList=opt.fileList
+    fileList=opt.fileList,
+    imWidth=300,
+    imHeight=300
 )
 segLoader = DataLoader(segDataset, batch_size=opt.batchSize,
                        num_workers=4, shuffle=True)
