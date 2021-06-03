@@ -215,7 +215,7 @@ class encoderSPP(nn.Module):
         self.b4_2 = ResBlock(512, 512, 1, 4)
 
         bins = (1,2,3,6)
-        self.ppm = PPM(512, (512/len(bins)), self.bins)
+        self.ppm = PPM(512, (512/len(bins)), bins)
 
     def forward(self, im):
 
