@@ -214,6 +214,9 @@ class encoderSPP(nn.Module):
         self.b4_1 = ResBlock(256, 512, 1, 4)
         self.b4_2 = ResBlock(512, 512, 1, 4)
 
+        bins = (1,2,3,6)
+        self.ppm = PPM(512, (512/len(bins)), self.bins)
+
     def forward(self, im):
 
         # IMPLEMENT YOUR CODE HERE
@@ -222,6 +225,7 @@ class encoderSPP(nn.Module):
         x3 = self.b2_2(self.b2_1(x2))
         x4 = self.b3_2(self.b3_1(x3))
         x5 = self.b4_2(self.b4_1(x4))
+        x5 = self.ppm(x5)
         return x1, x2, x3, x4, x5
 
 
@@ -230,7 +234,7 @@ class decoderSPP(nn.Module):
         super(decoderSPP, self).__init__()
 
         # IMPLEMENT YOUR CODE HERE
-        self.conv1 = nn.Conv2d(512+256+128, 512, 3, 1, 1, bias=False)
+        self.conv1 = nn.Conv2d(1024+256+128, 512, 3, 1, 1, bias=False)
         self.bn1 = nn.BatchNorm2d(512)
         self.conv1_1 = nn.Conv2d(512, 21, 3, 1, 1, bias=False)
         self.bn1_1 = nn.BatchNorm2d(21)
@@ -269,6 +273,25 @@ class decoderSPP(nn.Module):
 
         return pred
 
+class PPM(nn.Module):
+    def __init__(self, in_dim, reduction_dim, bins):
+        super(PPM, self).__init__()
+        self.features = []
+        for bin in bins:
+            self.features.append(nn.Sequential(
+                nn.AdaptiveAvgPool2d(bin),
+                nn.Conv2d(in_dim, reduction_dim, kernel_size=1, bias=False),
+                nn.BatchNorm2d(reduction_dim),
+                nn.ReLU(inplace=True)
+            ))
+        self.features = nn.ModuleList(self.features)
+
+    def forward(self, x):
+        x_size = x.size()
+        out = [x]
+        for f in self.features:
+            out.append(F.interpolate(f(x), x_size[2:], mode='bilinear', align_corners=True))
+        return torch.cat(out, 1)
 
 def loadPretrainedWeight(network, isOutput=False):
     paramList = []

@@ -30,8 +30,8 @@ parser.add_argument('--experiment', default='train',
 parser.add_argument('--modelRoot', default='checkpoint',
                     help='the path to store the training results')
 parser.add_argument('--initLR', type=float, default=0.1, help='the initial learning rate')
-parser.add_argument('--nepoch', type=int, default=150, help='the training epoch')
-parser.add_argument('--batchSize', type=int, default=64,
+parser.add_argument('--nepoch', type=int, default=100, help='the training epoch')
+parser.add_argument('--batchSize', type=int, default=32,
                     help='the size of a batch')
 parser.add_argument('--numClasses', type=int, default=21,
                     help='the number of classes')
