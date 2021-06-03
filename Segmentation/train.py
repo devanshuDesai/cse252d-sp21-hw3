@@ -98,7 +98,8 @@ encoder = encoder.to(device)
 decoder = decoder.to(device)
 
 # Initialize optimizer
-optimizer = optim.SGD(net.parameters(), lr=opt.initLR,
+params = list(encoder.parameters()) + list(decoder.parameters())
+optimizer = optim.SGD(params, lr=opt.initLR,
                       momentum=0.9, weight_decay=5e-4)
 
 # Initialize dataLoader
@@ -175,7 +176,8 @@ for epoch in range(0, opt.nepoch):
     if (epoch+1) % 2 == 0:
         np.save('%s/loss.npy' % opt.experiment, np.array(lossArr ) )
         np.save('%s/accuracy.npy' % opt.experiment, np.array(accuracyArr ) )
-        torch.save(net.state_dict(), '%s/net_%d.pth' % (opt.experiment, epoch+1) )
+        torch.save(encoder.state_dict(), '%s/encoder_%d.pth' % (opt.experiment, epoch+1) )
+        torch.save(decoder.state_dict(), '%s/decoder_%d.pth' % (opt.experiment, epoch+1) )
 
     trainingLog.close()
 # Save the accuracy
