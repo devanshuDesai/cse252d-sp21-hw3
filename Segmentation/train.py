@@ -29,7 +29,7 @@ parser.add_argument('--modelRoot', default='checkpoint',
                     help='the path to store the training results')
 parser.add_argument('--initLR', type=float, default=0.0001, help='the initial learning rate')
 parser.add_argument('--nepoch', type=int, default=100, help='the training epoch')
-parser.add_argument('--batchSize', type=int, default=1,
+parser.add_argument('--batchSize', type=int, default=100,
                     help='the size of a batch')
 parser.add_argument('--numClasses', type=int, default=21,
                     help='the number of classes')
@@ -114,9 +114,8 @@ segDataset = dataLoader.BatchLoader(
     labelRoot=opt.labelRoot,
     fileList=opt.fileList
 )
-# TODO: Make multi-threaded
 segLoader = DataLoader(segDataset, batch_size=opt.batchSize,
-                       num_workers=0, shuffle=True)
+                       num_workers=4, shuffle=True)
 
 lossArr = []
 accuracyArr = []
@@ -127,6 +126,7 @@ accuracy = np.zeros(opt.numClasses, dtype=np.float32)
 trainingLog = open(
     '{0}/trainingLog_{1}.txt'.format(opt.experiment, epoch), 'w')
 for epoch in range(0, opt.nepoch):
+    torch.cuda.manual_seed(epoch)
     trainingLog = open(
         '{0}/trainingLog_{1}.txt'.format(opt.experiment, epoch), 'w')
     for i, dataBatch in enumerate(segLoader):
