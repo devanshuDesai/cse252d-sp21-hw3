@@ -13,6 +13,8 @@ import os
 import numpy as np
 import utils
 import scipy.io as io
+import warnings
+warnings.filterwarnings('ignore')
 
 parser = argparse.ArgumentParser()
 # The location of training set
@@ -29,7 +31,7 @@ parser.add_argument('--modelRoot', default='checkpoint',
                     help='the path to store the training results')
 parser.add_argument('--initLR', type=float, default=0.0001, help='the initial learning rate')
 parser.add_argument('--nepoch', type=int, default=100, help='the training epoch')
-parser.add_argument('--batchSize', type=int, default=100,
+parser.add_argument('--batchSize', type=int, default=64,
                     help='the size of a batch')
 parser.add_argument('--numClasses', type=int, default=21,
                     help='the number of classes')
