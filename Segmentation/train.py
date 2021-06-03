@@ -50,8 +50,6 @@ print(opt)
 
 colormap = io.loadmat(opt.colormap)['cmap']
 
-assert(opt.batchSize == 1)
-
 if opt.isSpp == True:
     opt.isDilation = False
 
