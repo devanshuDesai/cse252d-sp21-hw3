@@ -20,11 +20,13 @@ parser.add_argument(
 parser.add_argument(
     '--labelRoot', default='/datasets/cse152-252-sp20-public/hw3_data/VOCdevkit/VOC2012/SegmentationClass', help='path to input images')
 parser.add_argument(
-    '--fileList', default='/datasets/cse152-252-sp20-public/hw3_data/VOCdevkit/VOC2012/ImageSets/Segmentation/val.txt', help='path to input images')
+    '--fileList',
+    default='/datasets/cse152-252-sp20-public/hw3_data/VOCdevkit/VOC2012/ImageSets/Segmentation/train.txt', help='path to input images')
 parser.add_argument('--experiment', default='train',
                     help='the path to store sampled images and models')
 parser.add_argument('--modelRoot', default='checkpoint',
                     help='the path to store the training results')
+parser.add_argument('--initLR', type=float, default=0.1, help='the initial learning rate')
 parser.add_argument('--nepoch', type=int, default=20, help='the training epoch')
 parser.add_argument('--batchSize', type=int, default=1,
                     help='the size of a batch')
