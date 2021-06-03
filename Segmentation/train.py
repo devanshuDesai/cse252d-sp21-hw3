@@ -1,4 +1,5 @@
 import torch
+from model import loadPretrainedWeight
 from torch.autograd import Variable
 import torch.optim as optim
 import torch.functional as F
@@ -98,6 +99,9 @@ labelIndexBatch = labelIndexBatch.to(device)
 maskBatch = maskBatch.to(device)
 encoder = encoder.to(device)
 decoder = decoder.to(device)
+
+# Load pre-trained weights
+loadPretrainedWeight(encoder)
 
 # Initialize optimizer
 params = list(encoder.parameters()) + list(decoder.parameters())
