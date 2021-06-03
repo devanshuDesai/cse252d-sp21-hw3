@@ -105,9 +105,9 @@ loadPretrainedWeight(encoder)
 
 # Initialize optimizer
 params = list(encoder.parameters()) + list(decoder.parameters())
-optimizer = optim.RMSprop(params, lr=opt.initLR, weight_decay=1e-8, momentum=0.9)
+# optimizer = optim.RMSprop(params, lr=opt.initLR, weight_decay=1e-8, momentum=0.9)
+optimizer = optim.SGD(params, lr=opt.initLR, momentum=0.9, weight_decay=5e-4)
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=2)
-# optimizer = optim.SGD(params, lr=opt.initLR, momentum=0.9, weight_decay=5e-4)
 
 # Initialize dataLoader
 segDataset = dataLoader.BatchLoader(
