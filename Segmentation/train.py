@@ -118,7 +118,7 @@ segDataset = dataLoader.BatchLoader(
     imHeight=300
 )
 segLoader = DataLoader(segDataset, batch_size=opt.batchSize,
-                       num_workers=4, shuffle=True)
+                       num_workers=8, shuffle=True)
 
 lossArr = []
 accuracyArr = []
