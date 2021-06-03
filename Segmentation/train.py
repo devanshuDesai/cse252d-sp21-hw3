@@ -26,8 +26,8 @@ parser.add_argument('--experiment', default='train',
                     help='the path to store sampled images and models')
 parser.add_argument('--modelRoot', default='checkpoint',
                     help='the path to store the training results')
-parser.add_argument('--initLR', type=float, default=0.1, help='the initial learning rate')
-parser.add_argument('--nepoch', type=int, default=20, help='the training epoch')
+parser.add_argument('--initLR', type=float, default=0.0001, help='the initial learning rate')
+parser.add_argument('--nepoch', type=int, default=100, help='the training epoch')
 parser.add_argument('--batchSize', type=int, default=1,
                     help='the size of a batch')
 parser.add_argument('--numClasses', type=int, default=21,
@@ -115,6 +115,7 @@ segLoader = DataLoader(segDataset, batch_size=opt.batchSize,
                        num_workers=0, shuffle=True)
 
 lossArr = []
+accuracyArr = []
 iteration = 0
 epoch = opt.nepoch
 confcounts = np.zeros((opt.numClasses, opt.numClasses), dtype=np.int64)
@@ -157,6 +158,7 @@ for epoch in range(0, opt.nepoch):
         lossArr.append(loss.cpu().data.item())
         meanLoss = np.mean(np.array(lossArr[:]))
         meanAccuracy = np.mean(accuracy)
+        accuracyArr.append(meanAccuracy)
 
         print('Epoch %d iteration %d: Loss %.5f Accumulated Loss %.5f'
               % (epoch, iteration, lossArr[-1], meanLoss))
