@@ -19,7 +19,7 @@ def computeAccuracy( pred, labelIndexBatch, maskBatch, numClasses = 21 ):
     sumim = gt * numClasses + pred
     sumim = sumim[mask != 0].squeeze()
 
-    histIm, _ = np.histogram(sumim, np.arange(numClasses * numClasses ) )
+    histIm, _ = np.histogram(sumim, np.arange(numClasses * numClasses + 1 ) )
     hist[0:len(histIm ) ] += histIm
 
     return hist.reshape(numClasses, numClasses )
